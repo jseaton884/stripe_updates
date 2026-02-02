@@ -1,0 +1,20 @@
+name: Monthly Stripe Billing Sync
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install Stripe
+        run: pip install stripe
+      - name: Run Update Script
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: python stripe_update.py
